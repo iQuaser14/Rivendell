@@ -1,0 +1,12 @@
+{
+  "name": "@rivendell/web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "echo 'Next.js app — run create-next-app to set up'",
+    "build": "echo 'stub'",
+    "typecheck": "echo 'stub'",
+    "lint": "echo 'stub'",
+    "test": "echo 'stub'"
+  }
+}

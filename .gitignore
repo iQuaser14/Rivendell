@@ -1,0 +1,27 @@
+node_modules/
+dist/
+.turbo/
+.next/
+.expo/
+*.tsbuildinfo
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Supabase
+supabase/.temp/
+supabase/.branches/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Coverage
+coverage/
