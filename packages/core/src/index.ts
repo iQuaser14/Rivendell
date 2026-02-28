@@ -7,6 +7,7 @@ export * from './models/schemas.js';
 export * from './utils/math.js';
 export * from './utils/dates.js';
 export * from './utils/fx.js';
+export * from './utils/market-hours.js';
 
 // Calculations
 export {

@@ -7,13 +7,33 @@ import { insertTrade, insertTrades, upsertAsset, insertCashFlow } from '@rivende
 import { getServerClient } from '@/lib/supabase/server';
 
 export async function createTrade(formData: FormData): Promise<{ error?: string }> {
+  let assetId = formData.get('assetId') as string;
+  const ticker = formData.get('ticker') as string;
+  const currency = formData.get('currency') as string;
+
+  const client = getServerClient();
+
+  // Auto-create asset if no assetId but ticker is provided
+  if (!assetId && ticker) {
+    if (!client) return { error: 'Supabase not configured' };
+    const { data: asset, error: assetErr } = await upsertAsset({
+      ticker,
+      asset_class: 'equity',
+      currency,
+    }, client);
+    if (assetErr || !asset) {
+      return { error: assetErr?.message ?? 'Failed to create asset' };
+    }
+    assetId = asset.id;
+  }
+
   const raw = {
-    assetId: formData.get('assetId') as string,
+    assetId,
     tradeDate: formData.get('tradeDate') as string,
     side: formData.get('side') as string,
     quantity: parseFloat(formData.get('quantity') as string),
     price: parseFloat(formData.get('price') as string),
-    currency: formData.get('currency') as string,
+    currency,
     fxRateToEur: parseFloat(formData.get('fxRateToEur') as string),
     commission: parseFloat(formData.get('commission') as string) || 0,
     tax: parseFloat(formData.get('tax') as string) || 0,
@@ -39,7 +59,6 @@ export async function createTrade(formData: FormData): Promise<{ error?: string 
   const netAmount = grossAmount.plus(commission).plus(tax);
   const netAmountEur = grossAmountEur.plus(commission.div(fxRate)).plus(tax.div(fxRate));
 
-  const client = getServerClient();
   const { error } = await insertTrade({
     asset_id: input.assetId,
     trade_date: input.tradeDate.toISOString().slice(0, 10),

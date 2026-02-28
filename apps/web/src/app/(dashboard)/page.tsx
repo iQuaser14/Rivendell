@@ -1,11 +1,11 @@
 import { Header } from '@/components/layout/header';
-import { PortfolioHero } from '@/components/dashboard/portfolio-hero';
 import { AllocationChart } from '@/components/dashboard/allocation-chart';
 import { ExposureCard } from '@/components/dashboard/exposure-card';
 import { RiskMetricsCard } from '@/components/dashboard/risk-metrics-card';
 import { TopContributors } from '@/components/dashboard/top-contributors';
 import { PerformanceChart } from '@/components/charts/performance-chart';
 import { DailyPnlChart } from '@/components/charts/daily-pnl-chart';
+import { DashboardLiveHeader } from './client';
 import { getServerClient } from '@/lib/supabase/server';
 import { getLatestSnapshot, getPortfolioCurrent, getPortfolioSnapshots } from '@rivendell/supabase';
 
@@ -26,7 +26,7 @@ export default async function DashboardPage() {
     <>
       <Header title="Overview" />
       <div className="mx-auto w-full max-w-screen-2xl space-y-4 p-3 sm:space-y-6 sm:p-4 md:p-6">
-        <PortfolioHero snapshot={snapshot} />
+        <DashboardLiveHeader snapshot={snapshot} positions={positions} />
         <div className="grid grid-cols-1 gap-4 sm:gap-6 xl:grid-cols-2">
           <PerformanceChart snapshots={snapshots} />
           <AllocationChart snapshot={snapshot} />

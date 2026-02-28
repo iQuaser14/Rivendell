@@ -12,7 +12,7 @@ export default async function TradesPage() {
   ]);
 
   const trades = (tradesRes.data ?? []) as any[];
-  const assets = (assetsRes.data ?? []).map((a: any) => ({ id: a.id, ticker: a.ticker }));
+  const assets = (assetsRes.data ?? []).map((a: any) => ({ id: a.id, ticker: a.ticker, currency: a.currency }));
 
   return (
     <>

@@ -11,7 +11,7 @@ import type { ParsedTrade, ParsedDividend } from '@rivendell/core';
 
 interface TradesPageClientProps {
   trades: any[];
-  assets: { id: string; ticker: string }[];
+  assets: { id: string; ticker: string; currency?: string }[];
 }
 
 export function TradesPageClient({ trades, assets }: TradesPageClientProps) {

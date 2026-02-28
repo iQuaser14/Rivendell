@@ -1,6 +1,5 @@
 import { Header } from '@/components/layout/header';
-import { PositionsSummary } from '@/components/dashboard/positions-summary';
-import { PositionsTable } from '@/components/tables/positions-table';
+import { PositionsClient } from './client';
 import { getServerClient } from '@/lib/supabase/server';
 import { getPortfolioCurrent } from '@rivendell/supabase';
 
@@ -13,8 +12,7 @@ export default async function PositionsPage() {
     <>
       <Header title="Positions" />
       <div className="mx-auto w-full max-w-screen-2xl space-y-4 p-3 sm:space-y-6 sm:p-4 md:p-6">
-        <PositionsSummary positions={positions} />
-        <PositionsTable positions={positions} />
+        <PositionsClient positions={positions} />
       </div>
     </>
   );

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table';
 import { Badge, assetClassBadge } from '@/components/ui/badge';
 import { PnlText } from '@/components/ui/pnl-text';
+import { Button } from '@/components/ui/button';
 import { FxDecompositionCell } from './fx-decomposition-cell';
 import { formatCurrency, formatNumber, formatPercent, cn } from '@/lib/utils';
 import type { Views } from '@rivendell/supabase';
@@ -13,9 +14,10 @@ type SortDir = 'asc' | 'desc';
 
 interface PositionsTableProps {
   positions: Views<'v_portfolio_current'>[];
+  onQuickSell?: (position: Views<'v_portfolio_current'>) => void;
 }
 
-export function PositionsTable({ positions }: PositionsTableProps) {
+export function PositionsTable({ positions, onQuickSell }: PositionsTableProps) {
   const [sortKey, setSortKey] = useState<SortKey>('weight_pct');
   const [sortDir, setSortDir] = useState<SortDir>('desc');
 
@@ -75,6 +77,7 @@ export function PositionsTable({ positions }: PositionsTableProps) {
           <TableHead>Return Decomposition</TableHead>
           <SortableHead label="Total Ret EUR" sortKeyName="total_return_pct" />
           <SortableHead label="Weight" sortKeyName="weight_pct" />
+          {onQuickSell && <TableHead />}
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -111,6 +114,18 @@ export function PositionsTable({ positions }: PositionsTableProps) {
             <TableCell className="text-right">
               {p.weight_pct != null ? formatPercent(p.weight_pct, 1) : '—'}
             </TableCell>
+            {onQuickSell && (
+              <TableCell>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => onQuickSell(p)}
+                  className="text-xs"
+                >
+                  {p.quantity > 0 ? 'Sell' : 'Cover'}
+                </Button>
+              </TableCell>
+            )}
           </TableRow>
         ))}
       </TableBody>

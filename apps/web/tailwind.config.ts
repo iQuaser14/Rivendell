@@ -16,6 +16,8 @@ const config: Config = {
         'positive-dim': '#00D4AA33',
         negative: '#FF4757',
         'negative-dim': '#FF475733',
+        warning: '#FFA502',
+        'warning-dim': '#FFA50233',
         muted: '#8888AA',
         'text-primary': '#F0F0FF',
         'text-secondary': '#A0A0C0',
