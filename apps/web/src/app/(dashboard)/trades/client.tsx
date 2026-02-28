@@ -6,7 +6,8 @@ import { TradesTable } from '@/components/tables/trades-table';
 import { TradeForm } from '@/components/forms/trade-form';
 import { CsvImport } from '@/components/forms/csv-import';
 import { createTrade, importTrades } from './actions';
-import { Plus, FileUp } from 'lucide-react';
+import { Plus, FileUp, FileSpreadsheet } from 'lucide-react';
+import Link from 'next/link';
 import type { ParsedTrade, ParsedDividend } from '@rivendell/core';
 
 interface TradesPageClientProps {
@@ -31,6 +32,11 @@ export function TradesPageClient({ trades, assets }: TradesPageClientProps) {
         <Button variant="secondary" onClick={() => setShowCsvImport(true)}>
           <FileUp className="h-4 w-4 mr-1" /> Import CSV
         </Button>
+        <Link href="/trades/import">
+          <Button variant="secondary">
+            <FileSpreadsheet className="h-4 w-4 mr-1" /> Import Fineco XLSX
+          </Button>
+        </Link>
       </div>
 
       <TradesTable trades={trades} />
