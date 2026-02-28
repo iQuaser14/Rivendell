@@ -7,6 +7,8 @@ import { PnlText } from '@/components/ui/pnl-text';
 import { Button } from '@/components/ui/button';
 import { FxDecompositionCell } from './fx-decomposition-cell';
 import { formatCurrency, formatNumber, formatPercent, cn } from '@/lib/utils';
+import { Plus } from 'lucide-react';
+import Link from 'next/link';
 import type { Views } from '@rivendell/supabase';
 
 type SortKey = 'ticker' | 'asset_class' | 'quantity' | 'market_value_eur' | 'unrealized_pnl_eur' | 'total_return_pct' | 'weight_pct';
@@ -41,17 +43,23 @@ export function PositionsTable({ positions, onQuickSell }: PositionsTableProps) 
 
   if (positions.length === 0) {
     return (
-      <div className="flex items-center justify-center py-12 text-sm text-muted">
-        No positions yet. Import trades to get started.
+      <div className="flex flex-col items-center justify-center py-20 gap-4">
+        <p className="text-xl font-semibold text-text-primary">No positions yet</p>
+        <p className="text-sm text-muted">Import trades or add your first position to get started.</p>
+        <Link href="/trades">
+          <Button size="lg">
+            <Plus className="h-5 w-5 mr-2" /> Add Trade
+          </Button>
+        </Link>
       </div>
     );
   }
 
-  const SortableHead = ({ label, sortKeyName, sticky }: { label: string; sortKeyName: SortKey; sticky?: boolean }) => (
+  const SortableHead = ({ label, sortKeyName, className: extraClass }: { label: string; sortKeyName: SortKey; className?: string }) => (
     <TableHead
       className={cn(
         'cursor-pointer select-none hover:text-text-primary',
-        sticky && 'sticky left-0 z-10 bg-card',
+        extraClass,
       )}
       onClick={() => handleSort(sortKeyName)}
     >
@@ -66,34 +74,33 @@ export function PositionsTable({ positions, onQuickSell }: PositionsTableProps) 
     <Table>
       <TableHeader>
         <TableRow>
-          <SortableHead label="Ticker" sortKeyName="ticker" sticky />
-          <SortableHead label="Class" sortKeyName="asset_class" />
-          <TableHead>CCY</TableHead>
-          <SortableHead label="Qty" sortKeyName="quantity" />
-          <TableHead className="text-right">Avg Cost</TableHead>
-          <TableHead className="text-right">Mkt Price</TableHead>
-          <SortableHead label="Mkt Value EUR" sortKeyName="market_value_eur" />
-          <SortableHead label="Unreal. P&L" sortKeyName="unrealized_pnl_eur" />
-          <TableHead>Return Decomposition</TableHead>
-          <SortableHead label="Total Ret EUR" sortKeyName="total_return_pct" />
-          <SortableHead label="Weight" sortKeyName="weight_pct" />
-          {onQuickSell && <TableHead />}
+          <SortableHead label="Ticker" sortKeyName="ticker" className="min-w-[100px]" />
+          <TableHead className="min-w-[120px]">Name</TableHead>
+          <SortableHead label="Qty" sortKeyName="quantity" className="text-right min-w-[80px]" />
+          <TableHead className="text-right min-w-[100px]">Avg Cost</TableHead>
+          <TableHead className="min-w-[60px]">CCY</TableHead>
+          <TableHead className="text-right min-w-[100px]">Mkt Price</TableHead>
+          <SortableHead label="Mkt Value" sortKeyName="market_value_eur" className="text-right min-w-[120px]" />
+          <SortableHead label="Unrealized P&L" sortKeyName="unrealized_pnl_eur" className="text-right min-w-[120px]" />
+          <TableHead className="text-right min-w-[80px]">P&L %</TableHead>
+          <TableHead className="text-right min-w-[90px]">Local Ret</TableHead>
+          <TableHead className="text-right min-w-[80px]">FX Impact</TableHead>
+          <SortableHead label="Weight" sortKeyName="weight_pct" className="text-right min-w-[80px]" />
+          {onQuickSell && <TableHead className="min-w-[70px]" />}
         </TableRow>
       </TableHeader>
       <TableBody>
         {sorted.map((p) => (
           <TableRow key={p.asset_id}>
-            <TableCell className="sticky left-0 z-10 bg-card font-semibold text-text-primary">{p.ticker}</TableCell>
-            <TableCell>
-              <Badge variant={assetClassBadge(p.asset_class)}>{p.asset_class}</Badge>
-            </TableCell>
-            <TableCell className="text-text-secondary">{p.trading_currency}</TableCell>
-            <TableCell className={cn(p.quantity < 0 && 'text-negative')}>
+            <TableCell className="font-semibold text-text-primary">{p.ticker}</TableCell>
+            <TableCell className="text-text-secondary font-sans text-sm">{p.name ?? '—'}</TableCell>
+            <TableCell className={cn('text-right', p.quantity < 0 && 'text-negative')}>
               {formatNumber(p.quantity, 0)}
             </TableCell>
             <TableCell className="text-right text-text-secondary">
               {formatNumber(p.avg_cost_local, 2)}
             </TableCell>
+            <TableCell className="text-text-secondary">{p.trading_currency}</TableCell>
             <TableCell className="text-right">
               {p.market_price_local != null ? formatNumber(p.market_price_local, 2) : '—'}
             </TableCell>
@@ -101,15 +108,14 @@ export function PositionsTable({ positions, onQuickSell }: PositionsTableProps) 
             <TableCell className="text-right">
               <PnlText value={p.unrealized_pnl_eur} size="sm" />
             </TableCell>
-            <TableCell>
-              <FxDecompositionCell
-                localReturn={p.local_return_pct}
-                fxImpact={p.fx_impact_pct}
-                totalReturn={p.total_return_pct}
-              />
+            <TableCell className="text-right">
+              <PnlText value={p.unrealized_pnl_pct} format="percent" size="sm" />
             </TableCell>
             <TableCell className="text-right">
-              <PnlText value={p.total_return_pct} format="percent" size="sm" />
+              <PnlText value={p.local_return_pct} format="percent" size="sm" />
+            </TableCell>
+            <TableCell className="text-right">
+              <PnlText value={p.fx_impact_pct} format="percent" size="sm" />
             </TableCell>
             <TableCell className="text-right">
               {p.weight_pct != null ? formatPercent(p.weight_pct, 1) : '—'}
@@ -120,7 +126,6 @@ export function PositionsTable({ positions, onQuickSell }: PositionsTableProps) 
                   size="sm"
                   variant="ghost"
                   onClick={() => onQuickSell(p)}
-                  className="text-xs"
                 >
                   {p.quantity > 0 ? 'Sell' : 'Cover'}
                 </Button>

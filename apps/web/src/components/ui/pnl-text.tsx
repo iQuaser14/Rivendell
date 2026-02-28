@@ -9,10 +9,10 @@ interface PnlTextProps extends HTMLAttributes<HTMLSpanElement> {
 }
 
 const sizeStyles = {
-  sm: 'text-xs',
-  md: 'text-sm',
-  lg: 'text-lg',
-  xl: 'text-2xl',
+  sm: 'text-sm',
+  md: 'text-base',
+  lg: 'text-xl',
+  xl: 'text-3xl',
 };
 
 export function PnlText({ value, format = 'currency', currency = 'EUR', size = 'md', className, ...props }: PnlTextProps) {

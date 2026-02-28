@@ -13,9 +13,9 @@ export function PortfolioHero({ snapshot }: PortfolioHeroProps) {
   if (!snapshot) {
     return (
       <Card className="col-span-full">
-        <div className="text-center py-8">
-          <p className="text-xl sm:text-3xl font-mono font-bold text-text-primary mb-2">No portfolio data</p>
-          <p className="text-xs sm:text-sm text-muted">Import trades or add positions to get started</p>
+        <div className="text-center py-12">
+          <p className="text-3xl md:text-4xl font-mono font-bold text-text-primary mb-3">No portfolio data</p>
+          <p className="text-base text-muted">Import trades or add positions to get started</p>
         </div>
       </Card>
     );
@@ -32,21 +32,21 @@ export function PortfolioHero({ snapshot }: PortfolioHeroProps) {
     <Card className="col-span-full">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0">
-          <p className="text-xs uppercase tracking-wider text-muted mb-1">Portfolio Value</p>
-          <p className="text-2xl sm:text-3xl md:text-4xl font-mono font-bold text-text-primary truncate">
+          <p className="text-sm uppercase tracking-wider text-muted mb-1">Portfolio Value</p>
+          <p className="text-3xl md:text-4xl lg:text-5xl font-mono font-bold text-text-primary truncate">
             {formatCurrency(snapshot.total_equity_eur)}
           </p>
-          <div className="mt-2 flex flex-wrap items-center gap-2 sm:gap-3">
-            <span className="text-xs text-muted">Daily P&L</span>
-            <PnlText value={snapshot.daily_pnl_eur} size="md" />
-            <PnlText value={snapshot.daily_return_pct} format="percent" size="sm" />
+          <div className="mt-3 flex flex-wrap items-center gap-3">
+            <span className="text-sm text-muted">Daily P&L</span>
+            <PnlText value={snapshot.daily_pnl_eur} size="lg" />
+            <PnlText value={snapshot.daily_return_pct} format="percent" size="md" />
           </div>
         </div>
-        <div className="grid grid-cols-4 gap-3 sm:flex sm:gap-6">
+        <div className="grid grid-cols-4 gap-4 sm:flex sm:gap-8">
           {periodReturns.map(({ label, value }) => (
             <div key={label} className="text-left sm:text-right">
               <p className="text-xs text-muted mb-1">{label}</p>
-              <PnlText value={value} format="percent" size="md" />
+              <PnlText value={value} format="percent" size="lg" />
             </div>
           ))}
         </div>

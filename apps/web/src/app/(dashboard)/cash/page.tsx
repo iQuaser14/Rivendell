@@ -17,7 +17,7 @@ export default async function CashPage() {
   return (
     <>
       <Header title="Cash" />
-      <div className="mx-auto w-full max-w-screen-2xl space-y-4 p-3 sm:space-y-6 sm:p-4 md:p-6">
+      <div className="w-full space-y-6 p-6">
         <CashSummary cashAccounts={cashAccounts} />
         <CashPageClient flows={flows} />
       </div>

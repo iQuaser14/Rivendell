@@ -66,11 +66,13 @@ export function PositionsClient({ positions }: PositionsClientProps) {
 
   return (
     <>
-      <div className="flex items-center justify-end mb-2">
+      <div className="flex items-center justify-end mb-4">
         <MarketStatus exchanges={exchanges} lastUpdated={lastUpdated} />
       </div>
-      <PositionsSummary positions={enrichedPositions} />
-      <PositionsTable positions={enrichedPositions} onQuickSell={handleQuickSell} />
+      <div className="space-y-6">
+        <PositionsSummary positions={enrichedPositions} />
+        <PositionsTable positions={enrichedPositions} onQuickSell={handleQuickSell} />
+      </div>
 
       {sellPrefill && (
         <TradeForm

@@ -24,12 +24,12 @@ export function TradesPageClient({ trades, assets }: TradesPageClientProps) {
 
   return (
     <>
-      <div className="mb-6 flex items-center gap-2">
-        <Button size="sm" onClick={() => setShowTradeForm(true)}>
-          <Plus className="h-4 w-4" /> Add Trade
+      <div className="mb-6 flex items-center gap-3">
+        <Button onClick={() => setShowTradeForm(true)}>
+          <Plus className="h-4 w-4 mr-1" /> Add Trade
         </Button>
-        <Button size="sm" variant="secondary" onClick={() => setShowCsvImport(true)}>
-          <FileUp className="h-4 w-4" /> Import CSV
+        <Button variant="secondary" onClick={() => setShowCsvImport(true)}>
+          <FileUp className="h-4 w-4 mr-1" /> Import CSV
         </Button>
       </div>
 
