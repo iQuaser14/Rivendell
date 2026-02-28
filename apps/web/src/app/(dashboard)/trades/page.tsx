@@ -17,7 +17,7 @@ export default async function TradesPage() {
   return (
     <>
       <Header title="Trades" />
-      <div className="p-6">
+      <div className="mx-auto w-full max-w-screen-2xl p-3 sm:p-4 md:p-6">
         <TradesPageClient trades={trades} assets={assets} />
       </div>
     </>

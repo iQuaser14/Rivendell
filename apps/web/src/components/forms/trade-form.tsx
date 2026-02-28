@@ -79,8 +79,8 @@ export function TradeForm({ assets, onSubmit, onClose }: TradeFormProps) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-      <Card className="w-full max-w-lg">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60">
+      <Card className="w-full max-h-[90vh] overflow-y-auto sm:max-w-lg rounded-b-none sm:rounded-b-xl">
         <CardHeader>
           <CardTitle>Add Trade</CardTitle>
           <button onClick={onClose} className="text-muted hover:text-text-primary">
@@ -88,7 +88,7 @@ export function TradeForm({ assets, onSubmit, onClose }: TradeFormProps) {
           </button>
         </CardHeader>
         <form onSubmit={handleSubmit} onChange={(e) => updatePreview(e.currentTarget)} className="space-y-4">
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="mb-1 block text-xs text-muted">Asset</label>
               <Select name="assetId" required>
@@ -106,7 +106,7 @@ export function TradeForm({ assets, onSubmit, onClose }: TradeFormProps) {
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
               <label className="mb-1 block text-xs text-muted">Side</label>
               <Select name="side" required>
@@ -127,7 +127,7 @@ export function TradeForm({ assets, onSubmit, onClose }: TradeFormProps) {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="mb-1 block text-xs text-muted">Currency</label>
               <Select name="currency" required defaultValue="EUR">
@@ -154,7 +154,7 @@ export function TradeForm({ assets, onSubmit, onClose }: TradeFormProps) {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="mb-1 block text-xs text-muted">Notes</label>
               <Input name="notes" placeholder="Optional" />

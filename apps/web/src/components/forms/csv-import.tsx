@@ -77,8 +77,8 @@ export function CsvImport({ onImport, onClose }: CsvImportProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-      <Card className="max-h-[80vh] w-full max-w-4xl overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60">
+      <Card className="max-h-[90vh] w-full sm:max-w-4xl overflow-hidden rounded-b-none sm:rounded-b-xl">
         <CardHeader>
           <CardTitle>Import Fineco CSV</CardTitle>
           <button onClick={onClose} className="text-muted hover:text-text-primary">

@@ -23,21 +23,21 @@ export function PositionsSummary({ positions }: PositionsSummaryProps) {
   ];
 
   return (
-    <Card className="flex items-center justify-between">
-      <div className="flex gap-8">
+    <Card className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex gap-6 sm:gap-8">
         {stats.map(({ label, value }) => (
           <div key={label}>
             <p className="text-xs text-muted">{label}</p>
-            <p className="font-mono text-lg font-semibold text-text-primary">{value}</p>
+            <p className="font-mono text-base sm:text-lg font-semibold text-text-primary">{value}</p>
           </div>
         ))}
       </div>
-      <div className="flex gap-8">
-        <div className="text-right">
+      <div className="flex gap-6 sm:gap-8">
+        <div className="sm:text-right">
           <p className="text-xs text-muted">Market Value</p>
-          <p className="font-mono text-lg font-semibold text-text-primary">{formatCurrency(totalValue)}</p>
+          <p className="font-mono text-base sm:text-lg font-semibold text-text-primary">{formatCurrency(totalValue)}</p>
         </div>
-        <div className="text-right">
+        <div className="sm:text-right">
           <p className="text-xs text-muted">Total P&L</p>
           <PnlText value={totalPnl} size="lg" />
         </div>

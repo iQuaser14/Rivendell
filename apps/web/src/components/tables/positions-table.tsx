@@ -45,9 +45,12 @@ export function PositionsTable({ positions }: PositionsTableProps) {
     );
   }
 
-  const SortableHead = ({ label, sortKeyName }: { label: string; sortKeyName: SortKey }) => (
+  const SortableHead = ({ label, sortKeyName, sticky }: { label: string; sortKeyName: SortKey; sticky?: boolean }) => (
     <TableHead
-      className="cursor-pointer select-none hover:text-text-primary"
+      className={cn(
+        'cursor-pointer select-none hover:text-text-primary',
+        sticky && 'sticky left-0 z-10 bg-card',
+      )}
       onClick={() => handleSort(sortKeyName)}
     >
       {label}
@@ -61,7 +64,7 @@ export function PositionsTable({ positions }: PositionsTableProps) {
     <Table>
       <TableHeader>
         <TableRow>
-          <SortableHead label="Ticker" sortKeyName="ticker" />
+          <SortableHead label="Ticker" sortKeyName="ticker" sticky />
           <SortableHead label="Class" sortKeyName="asset_class" />
           <TableHead>CCY</TableHead>
           <SortableHead label="Qty" sortKeyName="quantity" />
@@ -77,7 +80,7 @@ export function PositionsTable({ positions }: PositionsTableProps) {
       <TableBody>
         {sorted.map((p) => (
           <TableRow key={p.asset_id}>
-            <TableCell className="font-semibold text-text-primary">{p.ticker}</TableCell>
+            <TableCell className="sticky left-0 z-10 bg-card font-semibold text-text-primary">{p.ticker}</TableCell>
             <TableCell>
               <Badge variant={assetClassBadge(p.asset_class)}>{p.asset_class}</Badge>
             </TableCell>

@@ -3,8 +3,8 @@ import type { HTMLAttributes, TdHTMLAttributes, ThHTMLAttributes } from 'react';
 
 export function Table({ className, ...props }: HTMLAttributes<HTMLTableElement>) {
   return (
-    <div className="w-full overflow-auto">
-      <table className={cn('w-full caption-bottom text-sm', className)} {...props} />
+    <div className="w-full overflow-x-auto -mx-3 px-3 sm:mx-0 sm:px-0">
+      <table className={cn('w-full caption-bottom text-xs sm:text-sm', className)} {...props} />
     </div>
   );
 }
@@ -30,7 +30,7 @@ export function TableHead({ className, ...props }: ThHTMLAttributes<HTMLTableCel
   return (
     <th
       className={cn(
-        'h-10 px-3 text-left align-middle text-xs font-medium uppercase tracking-wider text-muted',
+        'h-10 px-2 sm:px-3 text-left align-middle text-[10px] sm:text-xs font-medium uppercase tracking-wider text-muted whitespace-nowrap',
         className,
       )}
       {...props}
@@ -39,5 +39,5 @@ export function TableHead({ className, ...props }: ThHTMLAttributes<HTMLTableCel
 }
 
 export function TableCell({ className, ...props }: TdHTMLAttributes<HTMLTableCellElement>) {
-  return <td className={cn('px-3 py-3 align-middle font-mono text-sm', className)} {...props} />;
+  return <td className={cn('px-2 sm:px-3 py-2 sm:py-3 align-middle font-mono text-xs sm:text-sm whitespace-nowrap', className)} {...props} />;
 }

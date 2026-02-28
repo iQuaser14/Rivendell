@@ -12,7 +12,7 @@ export default async function PositionsPage() {
   return (
     <>
       <Header title="Positions" />
-      <div className="space-y-6 p-6">
+      <div className="mx-auto w-full max-w-screen-2xl space-y-4 p-3 sm:space-y-6 sm:p-4 md:p-6">
         <PositionsSummary positions={positions} />
         <PositionsTable positions={positions} />
       </div>

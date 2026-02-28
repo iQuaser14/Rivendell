@@ -27,7 +27,7 @@ export function CashSummary({ cashAccounts }: CashSummaryProps) {
         <CardHeader><CardTitle>Cash Balances</CardTitle></CardHeader>
         <div className="mb-4">
           <p className="text-xs uppercase tracking-wider text-muted">Total Cash (EUR)</p>
-          <p className="font-mono text-3xl font-bold text-text-primary">
+          <p className="font-mono text-2xl sm:text-3xl font-bold text-text-primary">
             {formatCurrency(totalEur)}
           </p>
         </div>

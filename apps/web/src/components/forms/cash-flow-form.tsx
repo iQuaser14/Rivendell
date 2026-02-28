@@ -54,8 +54,8 @@ export function CashFlowForm({ onSubmit, onClose }: CashFlowFormProps) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-      <Card className="w-full max-w-md">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60">
+      <Card className="w-full max-h-[90vh] overflow-y-auto sm:max-w-md rounded-b-none sm:rounded-b-xl">
         <CardHeader>
           <CardTitle>Add Cash Flow</CardTitle>
           <button onClick={onClose} className="text-muted hover:text-text-primary">
