@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip } from 'recharts';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChartWrapper } from '@/components/charts/chart-wrapper';
-import type { Tables } from '@rivendell/supabase';
+import type { Tables, Views } from '@rivendell/supabase';
 import type { Json } from '@rivendell/supabase';
 
 const COLORS = ['#00D4AA', '#4A90D9', '#9B59B6', '#E67E22', '#FF4757', '#1ABC9C', '#FFD700', '#FF6B81'];
@@ -20,6 +20,7 @@ const tabs: { key: TabKey; label: string }[] = [
 
 interface AllocationChartProps {
   snapshot: Tables<'portfolio_snapshots'> | null;
+  positions?: Views<'v_portfolio_current'>[];
 }
 
 function jsonToEntries(json: Json | null): { name: string; value: number }[] {
@@ -30,7 +31,32 @@ function jsonToEntries(json: Json | null): { name: string; value: number }[] {
     .sort((a, b) => b.value - a.value);
 }
 
-export function AllocationChart({ snapshot }: AllocationChartProps) {
+function deriveAllocation(
+  positions: Views<'v_portfolio_current'>[],
+  key: TabKey,
+): { name: string; value: number }[] {
+  const openPositions = positions.filter((p) => p.quantity !== 0);
+  const totalCost = openPositions.reduce((s, p) => s + Math.abs(p.total_cost_eur ?? 0), 0);
+  if (totalCost === 0) return [];
+
+  const groupMap: Record<string, number> = {};
+  for (const p of openPositions) {
+    let groupName: string;
+    switch (key) {
+      case 'class': groupName = p.asset_class ?? 'Unknown'; break;
+      case 'sector': groupName = p.sector ?? 'Unknown'; break;
+      case 'region': groupName = p.region ?? 'Unknown'; break;
+      case 'currency': groupName = p.trading_currency ?? 'Unknown'; break;
+    }
+    groupMap[groupName] = (groupMap[groupName] ?? 0) + Math.abs(p.total_cost_eur ?? 0);
+  }
+
+  return Object.entries(groupMap)
+    .map(([name, cost]) => ({ name, value: cost / totalCost }))
+    .sort((a, b) => b.value - a.value);
+}
+
+export function AllocationChart({ snapshot, positions = [] }: AllocationChartProps) {
   const [activeTab, setActiveTab] = useState<TabKey>('class');
 
   const allocationMap: Record<TabKey, Json | null> = {
@@ -40,7 +66,9 @@ export function AllocationChart({ snapshot }: AllocationChartProps) {
     currency: snapshot?.allocation_by_currency ?? null,
   };
 
-  const data = jsonToEntries(allocationMap[activeTab]);
+  // Use snapshot allocation if available, otherwise derive from positions
+  const snapshotData = jsonToEntries(allocationMap[activeTab]);
+  const data = snapshotData.length > 0 ? snapshotData : deriveAllocation(positions, activeTab);
 
   return (
     <Card>

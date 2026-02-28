@@ -13,7 +13,9 @@ export function PositionsSummary({ positions }: PositionsSummaryProps) {
   const count = positions.length;
   const longs = positions.filter((p) => p.quantity > 0).length;
   const shorts = positions.filter((p) => p.quantity < 0).length;
+  const hasMarketValues = positions.some((p) => p.market_value_eur != null);
   const totalValue = positions.reduce((s, p) => s + (p.market_value_eur ?? 0), 0);
+  const totalCost = positions.reduce((s, p) => s + (p.total_cost_eur ?? 0), 0);
   const totalPnl = positions.reduce((s, p) => s + (p.unrealized_pnl_eur ?? 0), 0);
 
   const stats = [
@@ -34,13 +36,25 @@ export function PositionsSummary({ positions }: PositionsSummaryProps) {
       </div>
       <div className="flex gap-8">
         <div className="sm:text-right">
-          <p className="text-sm text-muted">Market Value</p>
-          <p className="font-mono text-xl font-semibold text-text-primary">{formatCurrency(totalValue)}</p>
+          <p className="text-sm text-muted">{hasMarketValues ? 'Market Value' : 'Cost Basis'}</p>
+          <p className="font-mono text-xl font-semibold text-text-primary">
+            {formatCurrency(hasMarketValues ? totalValue : totalCost)}
+          </p>
         </div>
-        <div className="sm:text-right">
-          <p className="text-sm text-muted">Total P&L</p>
-          <PnlText value={totalPnl} size="lg" />
-        </div>
+        {hasMarketValues ? (
+          <div className="sm:text-right">
+            <p className="text-sm text-muted">Total P&L</p>
+            <PnlText value={totalPnl} size="lg" />
+          </div>
+        ) : (
+          <div className="sm:text-right">
+            <p className="text-sm text-muted">Realized P&L</p>
+            <PnlText
+              value={positions.reduce((s, p) => s + (p.realized_pnl_eur ?? 0), 0)}
+              size="lg"
+            />
+          </div>
+        )}
       </div>
     </Card>
   );

@@ -1,5 +1,4 @@
-[project]
-id = "rivendell"
+project_id = "rivendell"
 
 [api]
 enabled = true

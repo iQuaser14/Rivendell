@@ -29,10 +29,10 @@ export default async function DashboardPage() {
         <DashboardLiveHeader snapshot={snapshot} positions={positions} />
         <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
           <PerformanceChart snapshots={snapshots} />
-          <AllocationChart snapshot={snapshot} />
+          <AllocationChart snapshot={snapshot} positions={positions} />
         </div>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-          <ExposureCard snapshot={snapshot} />
+          <ExposureCard snapshot={snapshot} positions={positions} />
           <RiskMetricsCard snapshot={snapshot} />
           <TopContributors positions={positions} />
         </div>
